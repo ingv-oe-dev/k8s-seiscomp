@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: seiscomp
+  name: seiscomp-mariadb
+  labels:
+    app: seiscomp
+spec:
+  selector:
+    matchLabels:
+      app: seiscomp
+      tier: db
+  serviceName: seiscomp-mariadb-svc
+  template:
+    metadata:
+      labels:
+        app: seiscomp
+        tier: db
+    spec:
+      containers:
+      - name: mariadb
+        image: bitnami/mariadb:10.11.2
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: MARIADB_ROOT_USER
+            valueFrom:
+              secretKeyRef:
+                name: seiscomp-db-secret
+                key: username
+          - name: MARIADB_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: seiscomp-db-secret
+                key: password
+        ports:
+        - containerPort: 3306
+          name: mariadb-port
+        volumeMounts:
+        - name: data
+          mountPath: /bitnami/data
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+# resources:
+#   requests:
+#     memory: "4Gi"
