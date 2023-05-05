@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: seiscomp  
+  namespace: seiscomp
   name: seiscomp-fdsnws
   labels:
     app: seiscomp
@@ -21,68 +21,61 @@ spec:
       securityContext:
         fsGroup: 1000
       containers:
-      - name: seiscomp-fdsnws
-        image: registry.192.168.131.9.nip.io/seiscomp:latest
-        imagePullPolicy: IfNotPresent
-        env:
-        - name: SEISCOMP_ROOT
-          valueFrom:
-            configMapKeyRef:
-              name: seiscomp-config
-              key: SEISCOMP_ROOT
-        # - name: PATH
-        #   valueFrom:
-        #     configMapKeyRef:
-        #       name: seiscomp-config
-        #       key: PATH
-        - name: DB_HOST
-          valueFrom:
-            configMapKeyRef:
-              name: seiscomp-config
-              key: DB_HOST
-        - name: SEISCOMP_DB
-          valueFrom:
-            configMapKeyRef:
-              name: seiscomp-config
-              key: SEISCOMP_DB
-        - name: MARIADB_ROOT_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: seiscomp-secret
-              key: MARIADB_ROOT_PASSWORD
-        - name: SEISCOMP_USER
-          valueFrom:
-            secretKeyRef:
-              name: seiscomp-secret
-              key: SEISCOMP_USER
-        - name: SEISCOMP_USER_PWD
-          valueFrom:
-            secretKeyRef:
-              name: seiscomp-secret
-              key: SEISCOMP_USER_PWD
-        volumeMounts:
-        - name: config
-          mountPath: /home/sysop/init.sh
-          subPath: init.sh
-        - name: config
-          mountPath: /opt/seiscomp/etc/global.cfg
-          subPath: global.cfg
-        - name: config
-          mountPath: /opt/seiscomp/etc/kernel.cfg
-          subPath: kernel.cfg
-        - name: config
-          mountPath: /opt/seiscomp/etc/scmaster.cfg
-          subPath: scmaster.cfg
-        ports:
-        - containerPort: 8080
-        command: ["/bin/bash"]
-        args: ["-c", "sleep infinity"]
-        # args: ["/home/sysop/init.sh"]
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1001
+        - name: seiscomp-fdsnws
+          image: registry.192.168.131.9.nip.io/seiscomp:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: SEISCOMP_ROOT
+              valueFrom:
+                configMapKeyRef:
+                  name: seiscomp-config
+                  key: SEISCOMP_ROOT
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: seiscomp-config
+                  key: DB_HOST
+            - name: SEISCOMP_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: seiscomp-config
+                  key: SEISCOMP_DB
+            - name: MARIADB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: seiscomp-secret
+                  key: MARIADB_ROOT_PASSWORD
+            - name: SEISCOMP_USER
+              valueFrom:
+                secretKeyRef:
+                  name: seiscomp-secret
+                  key: SEISCOMP_USER
+            - name: SEISCOMP_USER_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: seiscomp-secret
+                  key: SEISCOMP_USER_PWD
+          volumeMounts:
+            - name: config
+              mountPath: /home/sysop/init.sh
+              subPath: init.sh
+            - name: config
+              mountPath: /opt/seiscomp/etc/global.cfg
+              subPath: global.cfg
+            - name: config
+              mountPath: /opt/seiscomp/etc/kernel.cfg
+              subPath: kernel.cfg
+            - name: config
+              mountPath: /opt/seiscomp/etc/scmaster.cfg.orig
+              subPath: scmaster.cfg.orig
+          ports:
+            - containerPort: 8080
+          command: ["/bin/bash"]
+          args: ["/home/sysop/init.sh"]
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1001
       volumes:
-      - name: config
-        configMap:
-          name: seiscomp-config
-
+        - name: config
+          configMap:
+            name: seiscomp-config

@@ -18,35 +18,35 @@ spec:
         tier: db
     spec:
       containers:
-      - name: mariadb
-        image: bitnami/mariadb:10.11.2
-        imagePullPolicy: IfNotPresent
-        env:
-          - name: MARIADB_ROOT_USER
-            valueFrom:
-              secretKeyRef:
-                name: seiscomp-db-secret
-                key: username
-          - name: MARIADB_ROOT_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: seiscomp-db-secret
-                key: password
-        ports:
-        - containerPort: 3306
-          name: mariadb-port
-        volumeMounts:
-        - name: data
-          mountPath: /bitnami/mariadb
+        - name: mariadb
+          image: bitnami/mariadb:10.11.2
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MARIADB_ROOT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: seiscomp-db-secret
+                  key: username
+            - name: MARIADB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: seiscomp-db-secret
+                  key: password
+          ports:
+            - containerPort: 3306
+              name: mariadb-port
+          volumeMounts:
+            - name: data
+              mountPath: /bitnami/mariadb
   volumeClaimTemplates:
-  - metadata:
-      name: data
-    spec:
-      accessModes:
-      - ReadWriteOnce
-      resources:
-        requests:
-          storage: 1Gi
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
 # resources:
 #   requests:
 #     memory: "4Gi"
