@@ -33,9 +33,9 @@ data:
 
     /usr/bin/sed -i 's/recordstream = sdsarchive:\/\/@ROOTDIR@\/var\/lib\/archive/recordstream = sdsarchive:\/\/\/mseed/g' /opt/seiscomp/etc/defaults/fdsnws.cfg
 
-    for xml_file in `ls ~/inv_xml/*.xml`
+    for xml_file in `ls /inv_xml/*.xml`
     do
-      /opt/seiscomp/bin/seiscomp exec import_inv  fdsnxml ${xml_file}
+      /opt/seiscomp/bin/seiscomp exec import_inv fdsnxml ${xml_file}
     done
 
     /opt/seiscomp/bin/seiscomp update-config

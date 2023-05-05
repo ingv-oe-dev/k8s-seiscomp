@@ -68,6 +68,10 @@ spec:
             - name: config
               mountPath: /opt/seiscomp/etc/scmaster.cfg.orig
               subPath: scmaster.cfg.orig
+            - name: nfs-vol
+              mountPath: /mseed
+            - name: nfs-vol-inventory
+              mountPath: /inv_xml
           ports:
             - containerPort: 8080
           command: ["/bin/bash"]
@@ -79,3 +83,11 @@ spec:
         - name: config
           configMap:
             name: seiscomp-config
+        - name: nfs-vol
+          nfs:
+            server: <Server_IP_Addr>
+            path: /path/to/remote/mseed
+        - name: nfs-vol-inventory
+          nfs:
+            server: <Server_IP_Addr>
+            path: /path/to/remote/inventories
