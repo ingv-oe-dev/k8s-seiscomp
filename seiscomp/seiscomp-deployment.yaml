@@ -23,7 +23,7 @@ spec:
       containers:
       - name: seiscomp-fdsnws
         image: registry.192.168.131.9.nip.io/seiscomp:latest
-        # imagePullPolicy: Never
+        imagePullPolicy: IfNotPresent
         env:
         - name: SEISCOMP_ROOT
           valueFrom:
