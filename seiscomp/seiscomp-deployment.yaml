@@ -22,7 +22,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: seiscomp-fdsnws
-          image: registry.192.168.131.9.nip.io/seiscomp:latest
+          image: registry.192.168.131.9.nip.io/seiscomp:5.3.0_0.1-rc
           imagePullPolicy: IfNotPresent
           env:
             - name: SEISCOMP_ROOT
@@ -72,10 +72,28 @@ spec:
               mountPath: /mseed
             - name: nfs-vol-inventory
               mountPath: /inv_xml
+          livenessProbe:
+            exec:
+              command:
+                [
+                  "/bin/bash",
+                  "-c",
+                  "wget http://localhost:8080 -O /dev/null",
+                ]
+            initialDelaySeconds: 20
+            periodSeconds: 5
+          readinessProbe:
+            exec:
+              command:
+                [
+                  "/bin/bash",
+                  "-c",
+                  "wget http://localhost:8080 -O /dev/null",
+                ]
+            initialDelaySeconds: 15
+            timeoutSeconds: 5
           ports:
             - containerPort: 8080
-          command: ["/bin/bash"]
-          args: ["/home/sysop/init.sh"]
           securityContext:
             runAsUser: 1000
             runAsGroup: 1001
@@ -85,9 +103,9 @@ spec:
             name: seiscomp-config
         - name: nfs-vol
           nfs:
-            server: <Server_IP_Addr>
-            path: /path/to/remote/mseed
+            server: hpcfdsn1.ct.int.ingv.it
+            path: /home/fdsnmanager/hpcfdsn1SDS
         - name: nfs-vol-inventory
           nfs:
-            server: <Server_IP_Addr>
-            path: /path/to/remote/inventories
+            server: pist-i5.ct.int.ingv.it
+            path: /mnt/nfs-servers/testmseed

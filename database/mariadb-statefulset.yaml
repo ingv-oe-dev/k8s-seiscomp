@@ -32,6 +32,26 @@ spec:
                 secretKeyRef:
                   name: seiscomp-db-secret
                   key: password
+          livenessProbe:
+            exec:
+              command:
+                [
+                  "/bin/bash",
+                  "-c",
+                  "mysqladmin ping -h localhost -u ${MARIADB_ROOT_USER} -p${MARIADB_ROOT_PASSWORD}",
+                ]
+            initialDelaySeconds: 20
+            periodSeconds: 5
+          readinessProbe:
+            exec:
+              command:
+                [
+                  "/bin/bash",
+                  "-c",
+                  "mysqladmin ping -h localhost -u ${MARIADB_ROOT_USER} -p${MARIADB_ROOT_PASSWORD}",
+                ]
+            initialDelaySeconds: 15
+            timeoutSeconds: 5
           ports:
             - containerPort: 3306
               name: mariadb-port
