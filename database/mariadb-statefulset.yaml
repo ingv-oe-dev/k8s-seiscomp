@@ -17,6 +17,8 @@ spec:
         app: seiscomp
         tier: db
     spec:
+      securityContext:
+        fsGroup: 1001
       containers:
         - name: mariadb
           image: bitnami/mariadb:10.11.2

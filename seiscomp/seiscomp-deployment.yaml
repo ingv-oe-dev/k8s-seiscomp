@@ -20,6 +20,8 @@ spec:
     spec:
       securityContext:
         fsGroup: 1000
+      imagePullSecrets:
+        - name: regcred
       containers:
         - name: seiscomp-fdsnws
           image: registry.192.168.131.9.nip.io/seiscomp:5.3.0_0.1-rc
@@ -71,7 +73,7 @@ spec:
             - name: nfs-vol
               mountPath: /mseed
             - name: nfs-vol-inventory
-              mountPath: /inv_xml
+              mountPath: /home/sysop/inv_xml
           livenessProbe:
             exec:
               command:
@@ -103,9 +105,9 @@ spec:
             name: seiscomp-config
         - name: nfs-vol
           nfs:
-            server: hpcfdsn1.ct.int.ingv.it
+            server: 192.168.131.200
             path: /home/fdsnmanager/hpcfdsn1SDS
         - name: nfs-vol-inventory
           nfs:
-            server: pist-i5.ct.int.ingv.it
+            server: 192.168.131.49
             path: /mnt/nfs-servers/testmseed
