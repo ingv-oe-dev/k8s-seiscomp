@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: seiscomp-ingress
+  namespace: seiscomp
+spec:
+  ingressClassName: nginx
+#  tls:
+#  - hosts: 
+#      - "fdsnws.192.168.131.9.nip.io"
+#    secretName: seiscomp-tls-secret
+  rules:
+  - host: "fdsnws.192.168.131.9.nip.io"
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: seiscomp-svc 
+            port: 
+              number: 8080
+
