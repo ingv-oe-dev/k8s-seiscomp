@@ -22,7 +22,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: seiscomp-fdsnws
-          image: registry.192.168.131.9.nip.io/seiscomp:5.3.0_0.1-rc
+          image: registry.192.168.131.9.nip.io/seiscomp-5.3.0:latest 
           imagePullPolicy: IfNotPresent
           env:
             - name: SEISCOMP_ROOT
@@ -69,9 +69,7 @@ spec:
               mountPath: /opt/seiscomp/etc/scmaster.cfg.orig
               subPath: scmaster.cfg.orig
             - name: nfs-vol
-              mountPath: /mseed
-            - name: nfs-vol-inventory
-              mountPath: /inv_xml
+              mountPath: /nfs_data
           livenessProbe:
             exec:
               command:
@@ -105,7 +103,3 @@ spec:
           nfs:
             server: hpcfdsn1.ct.int.ingv.it
             path: /home/fdsnmanager/hpcfdsn1SDS
-        - name: nfs-vol-inventory
-          nfs:
-            server: pist-i5.ct.int.ingv.it
-            path: /mnt/nfs-servers/testmseed
