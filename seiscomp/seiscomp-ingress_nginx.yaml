@@ -5,10 +5,10 @@ metadata:
   namespace: seiscomp
 spec:
   ingressClassName: nginx
-  tls:
-  - hosts: 
-      - "fdsnws.192.168.131.9.nip.io"
-    secretName: seiscomp-tls-secret
+#  tls:
+#  - hosts: 
+#      - "fdsnws.192.168.131.9.nip.io"
+#    secretName: seiscomp-tls-secret
   rules:
   - host: "fdsnws.192.168.131.9.nip.io"
     http:
@@ -20,4 +20,3 @@ spec:
             name: seiscomp-svc 
             port: 
               number: 8080
-
