@@ -9,32 +9,6 @@ data:
   SEISCOMP_ROOT: /opt/seiscomp
   DB_HOST: seiscomp-mariadb-svc
   SEISCOMP_DB: seiscomp
-  init.sh: |
-    #!/bin/bash
-
-    /opt/seiscomp/bin/seiscomp print env >> /home/sysop/.bashrc
-    source /home/sysop/.bashrc
-
-    /opt/seiscomp/bin/seiscomp print env
-
-    /usr/bin/ping -c 5 ${DB_HOST}
-
-    /opt/seiscomp/share/db/mysql_setup.py ${SEISCOMP_DB} ${SEISCOMP_USER} ${SEISCOMP_USER_PWD} ${SEISCOMP_USER} ${SEISCOMP_USER_PWD} ${DB_HOST} ${MARIADB_ROOT_PASSWORD} false /opt/seiscomp/share/db/
-
-    cp -pv /opt/seiscomp/etc/scmaster.cfg.orig /opt/seiscomp/etc/scmaster.cfg
-    /usr/bin/sed -i "s/queues.production.processors.messages.dbstore.read = sysop:sysop@db\/seiscomp/queues.production.processors.messages.dbstore.read = ${SEISCOMP_USER}:${SEISCOMP_USER_PWD}@${DB_HOST}\/${SEISCOMP_DB}/g" /opt/seiscomp/etc/scmaster.cfg
-    /usr/bin/sed -i "s/queues.production.processors.messages.dbstore.write = sysop:sysop@db\/seiscomp/queues.production.processors.messages.dbstore.write = ${SEISCOMP_USER}:${SEISCOMP_USER_PWD}@${DB_HOST}\/${SEISCOMP_DB}/g" /opt/seiscomp/etc/scmaster.cfg
-    /usr/bin/sed -i 's/recordstream = sdsarchive:\/\/@ROOTDIR@\/var\/lib\/archive/recordstream = sdsarchive:\/\/\/nfs_data/g' /opt/seiscomp/etc/defaults/fdsnws.cfg
-
-    for xml_file in `find /nfs_data/fdsnXML/ -maxdepth 2 -type f`
-    do
-      /opt/seiscomp/bin/seiscomp exec import_inv fdsnxml ${xml_file}
-    done
-
-    /opt/seiscomp/bin/seiscomp update-config
-    /opt/seiscomp/bin/seiscomp start scmaster
-    /opt/seiscomp/bin/seiscomp enable fdsnws
-    /opt/seiscomp/bin/seiscomp start fdsnws
   scmaster.cfg.orig: |
     core.plugins = dbmysql
     queues.production.plugins = dbstore
@@ -48,3 +22,4 @@ data:
     organization = ""
     core.plugins = dbmysql
   kernel.cfg: ""
+  SEISCOMP_SAMPLES_M: "60"

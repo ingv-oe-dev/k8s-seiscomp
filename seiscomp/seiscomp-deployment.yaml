@@ -25,7 +25,7 @@ spec:
       containers:
         - name: seiscomp-fdsnws
           image: registry.192.168.131.9.nip.io/seiscomp-5.3.0:latest 
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           env:
             - name: SEISCOMP_ROOT
               valueFrom:
@@ -57,10 +57,12 @@ spec:
                 secretKeyRef:
                   name: seiscomp-secret
                   key: SEISCOMP_USER_PWD
+            - name: SEISCOMP_SAMPLES_M
+              valueFrom:
+                configMapKeyRef:
+                  name: seiscomp-config
+                  key: SEISCOMP_SAMPLES_M
           volumeMounts:
-            - name: config
-              mountPath: /home/sysop/init.sh
-              subPath: init.sh
             - name: config
               mountPath: /opt/seiscomp/etc/global.cfg
               subPath: global.cfg
