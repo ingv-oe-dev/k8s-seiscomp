@@ -62,6 +62,11 @@ spec:
                 configMapKeyRef:
                   name: seiscomp-config
                   key: SEISCOMP_SAMPLES_M
+            - name: SEISCOMP_FDSNWS_LOG_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: seiscomp-config
+                  key: SEISCOMP_FDSNWS_LOG_PATH
           volumeMounts:
             - name: config
               mountPath: /opt/seiscomp/etc/global.cfg
