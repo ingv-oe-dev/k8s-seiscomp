@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  namespace: seiscomp
+  namespace: dataprovider
   name: seiscomp-mariadb
   labels:
     app: seiscomp
@@ -54,6 +54,13 @@ spec:
                 ]
             initialDelaySeconds: 15
             timeoutSeconds: 5
+          resources:
+            requests:
+                memory: "1Gi"
+                cpu: "250m"
+            limits:
+                memory: "2Gi"
+                cpu: "500m"
           ports:
             - containerPort: 3306
               name: mariadb-port
@@ -69,6 +76,3 @@ spec:
         resources:
           requests:
             storage: 1Gi
-# resources:
-#   requests:
-#     memory: "4Gi"

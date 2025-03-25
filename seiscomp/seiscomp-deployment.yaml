@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: seiscomp
+  namespace: dataprovider
   name: seiscomp-fdsnws
   labels:
     app: seiscomp
@@ -24,8 +24,8 @@ spec:
         - name: regcred
       containers:
         - name: seiscomp-fdsnws
-          image: registry.192.168.131.9.nip.io/seiscomp-5.3.0:latest 
-          imagePullPolicy: Always
+          image: cnthub.ct.int.ingv.it/dataprovider/seiscomp-5.3.0:0.8
+          imagePullPolicy: IfNotPresent
           env:
             - name: SEISCOMP_ROOT
               valueFrom:
@@ -99,8 +99,22 @@ spec:
                 ]
             initialDelaySeconds: 15
             timeoutSeconds: 5
+          startupProbe:
+            httpGet:
+              path: http://localhost:8080
+              port: service-port
+            failureThreshold: 30
+            periodSeconds: 10
+          resources:
+            requests:
+                memory: "2Gi"
+                cpu: "500m"
+            limits:
+                memory: "4Gi"
+                cpu: "1000m"
           ports:
             - containerPort: 8080
+              name: service-port
           securityContext:
             runAsUser: 1000
             runAsGroup: 1001
@@ -110,5 +124,5 @@ spec:
             name: seiscomp-config
         - name: nfs-vol
           nfs:
-            server: 192.168.131.200
+            server: hpcfdsn1.ct.int.ingv.it
             path: /home/fdsnmanager/hpcfdsn1SDS

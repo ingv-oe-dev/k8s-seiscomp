@@ -1,14 +1,12 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  namespace: seiscomp
+  namespace: dataprovider
   name: seiscomp-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    
+
 spec:
   rules:
-    - host: fdsnws.192.168.49.2.nip.io
+    - host: fdsnws.10.200.61.10.nip.io
       http:
         paths:
           - path: /
