@@ -80,23 +80,15 @@ spec:
             - name: nfs-vol
               mountPath: /nfs_data
           livenessProbe:
-            exec:
-              command:
-                [
-                  "/bin/bash",
-                  "-c",
-                  "wget http://localhost:8080 -O /dev/null",
-                ]
+            httpGet:
+              path: http://localhost:8080
+              port: service-port
             initialDelaySeconds: 20
             periodSeconds: 5
           readinessProbe:
-            exec:
-              command:
-                [
-                  "/bin/bash",
-                  "-c",
-                  "wget http://localhost:8080 -O /dev/null",
-                ]
+            httpGet:
+              path: http://localhost:8080
+              port: service-port
             initialDelaySeconds: 15
             timeoutSeconds: 5
           startupProbe:
