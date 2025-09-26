@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: seiscomp-ingress
+spec:
+  rules:
+    - host: fdsnws.<local_dev_ip>.it
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: seiscomp-svc
+                port:
+                  number: 8080

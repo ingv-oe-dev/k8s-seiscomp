@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  namespace: dataprovider
   name: seiscomp-mariadb
   labels:
     app: seiscomp
@@ -23,17 +22,9 @@ spec:
         - name: mariadb
           image: bitnami/mariadb:10.11.2
           imagePullPolicy: IfNotPresent
-          env:
-            - name: MARIADB_ROOT_USER
-              valueFrom:
-                secretKeyRef:
-                  name: seiscomp-db-secret
-                  key: username
-            - name: MARIADB_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: seiscomp-db-secret
-                  key: password
+          envFrom:
+            - secretRef:
+                name: seiscomp-db-secret
           livenessProbe:
             exec:
               command:
@@ -54,16 +45,9 @@ spec:
                 ]
             initialDelaySeconds: 15
             timeoutSeconds: 5
-          resources:
-            requests:
-                memory: "1Gi"
-                cpu: "250m"
-            limits:
-                memory: "2Gi"
-                cpu: "500m"
           ports:
             - containerPort: 3306
-              name: mariadb-port
+              name: mariadb
           volumeMounts:
             - name: data
               mountPath: /bitnami/mariadb

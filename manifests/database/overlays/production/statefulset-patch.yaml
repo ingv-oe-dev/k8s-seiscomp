@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: seiscomp-mariadb
+  labels:
+    app: seiscomp
+spec:
+  template:
+    spec:
+      containers:
+        - name: mariadb
+          resources:
+            requests:
+                memory: "1Gi"
+                cpu: "250m"
+            limits:
+                memory: "2Gi"
+                cpu: "500m"
+  volumeClaimTemplates:
+    - metadata:
+      spec:
+        resources:
+          requests:
+            storage: 4Gi

@@ -1,0 +1,5 @@
+SEISCOMP_ROOT=/opt/seiscomp
+DB_HOST=seiscomp-mariadb-svc
+SEISCOMP_DB=seiscomp
+SEISCOMP_SAMPLES_M=60
+SEISCOMP_FDSNWS_LOG_PATH=/opt/seiscomp/var/log/fdsnws.log
