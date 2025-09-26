@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seiscomp-fdsnws-deployment
+  labels:
+    app: seiscomp
+spec:
+  selector:
+    matchLabels:
+      app: seiscomp
+  # strategy:
+  #   type: Recreate
+  template:
+    metadata:
+      labels:
+        app: seiscomp
+    spec:
+      securityContext:
+        fsGroup: 1000
+      # imagePullSecrets:
+      #   - name: regcred
+      containers:
+        - name: seiscomp-fdsnws
+          image: registry/namespace/seiscomp-image-version:tag
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1001
+          envFrom:
+            - configMapRef:
+                name: seiscomp-config-env
+            - secretRef:
+                name: seiscomp-secret
+          volumeMounts:
+            - name: config
+              mountPath: /opt/seiscomp/etc/global.cfg
+              subPath: global.cfg
+            - name: config
+              mountPath: /opt/seiscomp/etc/kernel.cfg
+              subPath: kernel.cfg
+            - name: config
+              mountPath: /opt/seiscomp/etc/scmaster.cfg.orig
+              subPath: scmaster.cfg.orig
+            - name: nfs-vol
+              mountPath: /nfs_data
+          ports:
+            - containerPort: 8080
+              name: service-port
+          livenessProbe:
+            httpGet:
+              path: /
+              port: service-port
+            initialDelaySeconds: 20
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: service-port
+            initialDelaySeconds: 15
+            timeoutSeconds: 5
+          startupProbe:
+            httpGet:
+              path: /
+              port: service-port
+            failureThreshold: 30
+            periodSeconds: 10
+      volumes:
+        - name: config
+          configMap:
+            name: seiscomp-config
+        - name: nfs-vol
+          nfs:
+            server: nfs.export.server.url
+            path: /home/fdsnmanager/hpcfdsn1SDS

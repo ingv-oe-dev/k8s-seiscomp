@@ -1,14 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  namespace: dataprovider
   name: seiscomp-config
   labels:
     app: seiscomp
 data:
-  SEISCOMP_ROOT: /opt/seiscomp
-  DB_HOST: seiscomp-mariadb-svc
-  SEISCOMP_DB: seiscomp
   scmaster.cfg.orig: |
     core.plugins = dbmysql
     queues.production.plugins = dbstore
@@ -22,5 +18,3 @@ data:
     organization = ""
     core.plugins = dbmysql
   kernel.cfg: ""
-  SEISCOMP_SAMPLES_M: "60"
-  SEISCOMP_FDSNWS_LOG_PATH: /opt/seiscomp/var/log/fdsnws.log

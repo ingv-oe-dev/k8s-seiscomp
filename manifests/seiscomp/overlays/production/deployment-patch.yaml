@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seiscomp-fdsnws-deployment
+  labels:
+    app: seiscomp
+spec:
+  template:
+    spec:
+      containers:
+        - name: seiscomp-fdsnws
+          image: cnthub.ct.int.ingv.it/dataprovider/seiscomp-5.3.0:0.8
+          resources:
+            requests:
+                memory: "2Gi"
+                cpu: "500m"
+            limits:
+                memory: "4Gi"
+                cpu: "1000m"
+      volumes:
+        - name: nfs-vol
+          nfs:
+            server: hpcfdsn1.ct.int.ingv.it
+            path: /home/fdsnmanager/hpcfdsn1SDS        

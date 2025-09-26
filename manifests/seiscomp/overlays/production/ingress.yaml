@@ -1,12 +1,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  namespace: dataprovider
   name: seiscomp-ingress
-
 spec:
   rules:
-    - host: fdsnws.10.200.61.10.nip.io
+    - host: fdsnws.ct.int.ingv.it
       http:
         paths:
           - path: /
