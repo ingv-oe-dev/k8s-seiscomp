@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: seiscomp-fdsnws
-          image: cnthub.ct.int.ingv.it/dataprovider/seiscomp-5.3.0:0.8
+          image: ghcr.io/ingv-oe-dev/docker-seiscomp/seiscomp-0.5.3:v1
           resources:
             requests:
                 memory: "2Gi"
@@ -18,6 +18,9 @@ spec:
                 memory: "4Gi"
                 cpu: "1000m"
       volumes:
+        - name: config
+          configMap:
+            name: seiscomp-config
         - name: nfs-vol
           nfs:
             server: hpcfdsn1.ct.int.ingv.it

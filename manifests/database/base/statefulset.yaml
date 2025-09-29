@@ -3,24 +3,22 @@ kind: StatefulSet
 metadata:
   name: seiscomp-mariadb
   labels:
-    app: seiscomp
+    app: mariadb
 spec:
   selector:
     matchLabels:
-      app: seiscomp
-      tier: db
+      app: mariadb
   serviceName: seiscomp-mariadb-svc
   template:
     metadata:
       labels:
-        app: seiscomp
-        tier: db
+        app: mariadb
     spec:
       securityContext:
         fsGroup: 1001
       containers:
         - name: mariadb
-          image: bitnami/mariadb:10.11.2
+          image: mariadb:11.8.3
           imagePullPolicy: IfNotPresent
           envFrom:
             - secretRef:
@@ -29,9 +27,7 @@ spec:
             exec:
               command:
                 [
-                  "/bin/bash",
-                  "-c",
-                  "mysqladmin ping -h localhost -u ${MARIADB_ROOT_USER} -p${MARIADB_ROOT_PASSWORD}",
+                  "healthcheck.sh", "--connect", "--innodb_initialized"
                 ]
             initialDelaySeconds: 20
             periodSeconds: 5
@@ -39,9 +35,7 @@ spec:
             exec:
               command:
                 [
-                  "/bin/bash",
-                  "-c",
-                  "mysqladmin ping -h localhost -u ${MARIADB_ROOT_USER} -p${MARIADB_ROOT_PASSWORD}",
+                  "healthcheck.sh", "--connect", "--innodb_initialized"
                 ]
             initialDelaySeconds: 15
             timeoutSeconds: 5
@@ -50,7 +44,7 @@ spec:
               name: mariadb
           volumeMounts:
             - name: data
-              mountPath: /bitnami/mariadb
+              mountPath: /var/lib/mysql
   volumeClaimTemplates:
     - metadata:
         name: data
