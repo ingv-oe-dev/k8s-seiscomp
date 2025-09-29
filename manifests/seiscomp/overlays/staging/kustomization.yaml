@@ -3,14 +3,14 @@ kind: Kustomization
 
 resources:
   - ../../base
-  - ingress.yaml
+  # - ingress.yaml
 
 namePrefix: staging-
 
 namespace: seiscomp-staging
 
 commonLabels:
-  app: seiscomp
+  app: seiscomp-fdsnws
 
 patches:
   - path: deployment-patch.yaml
@@ -25,7 +25,7 @@ patches:
 
 generatorOptions:
   labels:
-    app: seiscomp
+    app: seiscomp-fdsnws
   disableNameSuffixHash: true
 
 configMapGenerator:

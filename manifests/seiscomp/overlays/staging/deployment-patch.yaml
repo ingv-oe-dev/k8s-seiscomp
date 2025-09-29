@@ -3,13 +3,13 @@ kind: Deployment
 metadata:
   name: seiscomp-fdsnws-deployment
   labels:
-    app: seiscomp
+    app: seiscomp-fdsnws
 spec:
   template:
     spec:
       containers:
         - name: seiscomp-fdsnws
-          image: <staging_repo_url>/<staging_project>/seiscomp-5.3.0:0.8
+          image: ghcr.io/ingv-oe-dev/docker-seiscomp/seiscomp-0.5.3:v1
           resources:
             requests:
                 memory: "1Gi"
@@ -18,7 +18,10 @@ spec:
                 memory: "2Gi"
                 cpu: "500m"
       volumes:
+        - name: config
+          configMap:
+            name: staging-seiscomp-config
         - name: nfs-vol
           nfs:
-            server: hpcfdsn1.<local_staging>.it
+            server: hpcfdsn1.ct.int.ingv.it
             path: /home/fdsnmanager/hpcfdsn1SDS
