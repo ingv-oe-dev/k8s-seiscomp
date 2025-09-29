@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: seiscomp-mariadb-svc
   labels:
-    app: seiscomp
+    app: mariadb
 spec:
   ports:
     - port: 3306
       name: mariadb
   selector:
-    app: seiscomp
+    app: mariadb
   clusterIP: None
