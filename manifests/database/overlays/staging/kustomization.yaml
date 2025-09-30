@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../base
+  - sealed-secret.yaml
 
 # namePrefix: staging-
 
@@ -23,13 +24,19 @@ patches:
 #   newTag: v1.4.0-stable
 
 generatorOptions:
+  annotations:
+    sealedsecrets.bitnami.com/managed: "true"
   labels:
     app: seiscomp-mariadb
   disableNameSuffixHash: true
 
+configurations:
+  - sealed-secret-config.yaml
+
 secretGenerator:
 - name: seiscomp-db-secret
+  type: Opaque
+  options:
+      annotations:
+        config.kubernetes.io/local-config: "true"
   behavior: replace
-  envs:
-  - .env.secret
-  

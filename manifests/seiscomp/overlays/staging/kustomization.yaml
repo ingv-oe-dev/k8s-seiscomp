@@ -3,9 +3,9 @@ kind: Kustomization
 
 resources:
   - ../../base
-  # - ingress.yaml
+  - sealed-secret.yaml
 
-namePrefix: staging-
+# namePrefix: staging-
 
 namespace: seiscomp-staging
 
@@ -24,6 +24,8 @@ patches:
 #   newTag: v1.4.0-staging
 
 generatorOptions:
+  annotations:
+    sealedsecrets.bitnami.com/managed: "true"
   labels:
     app: seiscomp-fdsnws
   disableNameSuffixHash: true
@@ -34,9 +36,13 @@ configMapGenerator:
   envs:
   - .env
 
+configurations:
+  - sealed-secret-config.yaml
+
 secretGenerator:
 - name: seiscomp-secret
+  type: Opaque
+  options:
+      annotations:
+        config.kubernetes.io/local-config: "true"
   behavior: replace
-  envs:
-  - .env.secret
-  

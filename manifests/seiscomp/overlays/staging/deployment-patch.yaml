@@ -20,7 +20,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: staging-seiscomp-config
+            name: seiscomp-config
         - name: nfs-vol
           nfs:
             server: hpcfdsn1.ct.int.ingv.it
