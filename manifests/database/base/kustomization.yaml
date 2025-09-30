@@ -18,5 +18,4 @@ generatorOptions:
 secretGenerator:
 - name: seiscomp-db-secret
   behavior: create
-  envs:
-  - .env.secret
+  type: Opaque
