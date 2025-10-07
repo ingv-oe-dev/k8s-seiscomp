@@ -3,11 +3,12 @@ kind: Kustomization
 
 resources:
   - ../../base
+  - ingress.yaml
   - sealed-secret.yaml
 
 # namePrefix: staging-
 
-namespace: seiscomp-staging
+namespace: dataprovider-staging
 
 commonLabels:
   app: seiscomp-fdsnws
