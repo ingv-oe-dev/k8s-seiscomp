@@ -4,13 +4,12 @@ kind: Kustomization
 resources:
   - ../../base
   - ingress.yaml
+  - sealed-secret.yaml
 
-#namePrefix: production-
-
-namespace: seiscomp
+namespace: dataprovider
 
 commonLabels:
-  app: seiscomp
+  app: seiscomp-fdsnws
 
 patches:
   - path: deployment-patch.yaml
@@ -18,14 +17,11 @@ patches:
       kind: Deployment
       name: seiscomp-fdsnws-deployment
 
-# Eg: to change the image tag in production
-# images:
-# - name: ghcr.io/<production_image>
-#   newTag: v1.4.0-stable
-
 generatorOptions:
+  annotations:
+    sealedsecrets.bitnami.com/managed: "true"
   labels:
-    app: seiscomp
+    app: seiscomp-fdsnws
   disableNameSuffixHash: true
 
 configMapGenerator:
@@ -34,9 +30,13 @@ configMapGenerator:
   envs:
   - .env
 
+configurations:
+  - sealed-secret-config.yaml
+
 secretGenerator:
 - name: seiscomp-secret
+  type: Opaque
+  options:
+      annotations:
+        config.kubernetes.io/local-config: "true"
   behavior: replace
-  envs:
-  - .env.secret
-  
