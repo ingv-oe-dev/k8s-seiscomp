@@ -5,9 +5,7 @@ resources:
   - ../../base
   - sealed-secret.yaml
 
-# namePrefix: staging-
-
-namespace: seiscomp-staging
+namespace: dataprovider-staging
 
 commonLabels:
   app: seiscomp-mariadb
@@ -17,11 +15,6 @@ patches:
     target:
       kind: StatefulSet
       name: seiscomp-mariadb
-
-# Eg: to change the image tag in production
-# images:
-# - name: ghcr.io/<production_image>
-#   newTag: v1.4.0-stable
 
 generatorOptions:
   annotations:
