@@ -18,6 +18,7 @@ spec:
                 cpu: "500m"
   volumeClaimTemplates:
     - metadata:
+        name: data
       spec:
         accessModes:
           - ReadWriteOnce
