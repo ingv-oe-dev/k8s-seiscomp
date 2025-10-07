@@ -2,12 +2,21 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: seiscomp-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "cluster-issuer"
+    traefik.ingress.kubernetes.io/router.middlewares: dataprovider-staging-strip-seiscomp-prefix@kubernetescrd
+
 spec:
+  tls:
+    - hosts:
+      - dataprovider.10.201.2.221.nip.io
+      secretName: seiscomp-tls
+
   rules:
-    - host: fdsnws.<local_dev_ip>.it
+    - host: dataprovider.10.201.2.221.nip.io
       http:
         paths:
-          - path: /
+          - path: /seiscomp
             pathType: Prefix
             backend:
               service:

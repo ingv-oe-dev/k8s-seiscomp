@@ -5,6 +5,7 @@ resources:
   - deployment.yaml
   - service.yaml
   - config.yaml
+  - middleware.yaml
 
 namespace: seiscomp-base
 
