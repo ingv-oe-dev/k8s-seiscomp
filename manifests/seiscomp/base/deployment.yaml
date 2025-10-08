@@ -16,7 +16,7 @@ spec:
         app: seiscomp
     spec:
       securityContext:
-        fsGroup: 1000
+        fsGroup: 1001
       # imagePullSecrets:
       #   - name: regcred
       containers:
@@ -24,7 +24,7 @@ spec:
           image: registry/namespace/seiscomp-image-version:tag
           imagePullPolicy: IfNotPresent
           securityContext:
-            runAsUser: 1000
+            runAsUser: 1001
             runAsGroup: 1001
           envFrom:
             - configMapRef:
