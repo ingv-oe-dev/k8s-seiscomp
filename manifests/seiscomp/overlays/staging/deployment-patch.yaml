@@ -9,7 +9,7 @@ spec:
     spec:
       containers:
         - name: seiscomp-fdsnws
-          image: ghcr.io/ingv-oe-dev/docker-seiscomp/seiscomp-0.5.3:v1
+          image: ghcr.io/ingv-oe-dev/docker-seiscomp/seiscomp:5.3.0
           resources:
             requests:
                 memory: "1Gi"
