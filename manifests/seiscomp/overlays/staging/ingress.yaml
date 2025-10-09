@@ -4,7 +4,6 @@ metadata:
   name: seiscomp-ingress
   annotations:
     cert-manager.io/cluster-issuer: "cluster-issuer"
-    traefik.ingress.kubernetes.io/router.middlewares: dataprovider-staging-strip-seiscomp-prefix@kubernetescrd
 
 spec:
   tls:
@@ -16,7 +15,7 @@ spec:
     - host: dataprovider.10.201.2.221.nip.io
       http:
         paths:
-          - path: /seiscomp
+          - path: /fdsnws
             pathType: Prefix
             backend:
               service:
