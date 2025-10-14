@@ -34,3 +34,4 @@ spec:
           nfs:
             server: hpcfdsn1.ct.int.ingv.it
             path: /home/fdsnmanager/hpcfdsn1SDS
+            readOnly: true
