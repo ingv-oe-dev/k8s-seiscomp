@@ -3,11 +3,10 @@ kind: Kustomization
 
 resources:
   - ../../base
-  # - ingress.yaml
+  - ingress.yaml
+  - sealed-secret.yaml
 
-namePrefix: staging-
-
-namespace: seiscomp-staging
+namespace: dataprovider-staging
 
 commonLabels:
   app: seiscomp-fdsnws
@@ -18,12 +17,9 @@ patches:
       kind: Deployment
       name: seiscomp-fdsnws-deployment
 
-# Eg: to change the image tag in staging
-# images:
-# - name: ghcr.io/<staging_image>
-#   newTag: v1.4.0-staging
-
 generatorOptions:
+  annotations:
+    sealedsecrets.bitnami.com/managed: "true"
   labels:
     app: seiscomp-fdsnws
   disableNameSuffixHash: true
@@ -34,9 +30,13 @@ configMapGenerator:
   envs:
   - .env
 
+configurations:
+  - sealed-secret-config.yaml
+
 secretGenerator:
 - name: seiscomp-secret
+  type: Opaque
+  options:
+      annotations:
+        config.kubernetes.io/local-config: "true"
   behavior: replace
-  envs:
-  - .env.secret
-  

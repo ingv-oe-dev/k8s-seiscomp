@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: seiscomp-prod
+  namespace: argocd
+spec:
+  project: default
+
+  sources:
+    - repoURL: https://github.com/ingv-oe-dev/k8s-seiscomp.git
+      path: manifests/database/overlays/production
+      targetRevision: main
+    - repoURL: https://github.com/ingv-oe-dev/k8s-seiscomp.git
+      path: manifests/seiscomp/overlays/production
+      targetRevision: main
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: dataprovider
+
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+    - CreateNamespace=true
+    - PrunePropagationPolicy=foreground
+    - PruneLast=true

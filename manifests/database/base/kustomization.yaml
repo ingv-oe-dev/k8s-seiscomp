@@ -5,8 +5,6 @@ resources:
   - statefulset.yaml
   - service.yaml
 
-namespace: seiscomp-base
-
 commonLabels:
   app: seiscomp-base
 
@@ -18,5 +16,4 @@ generatorOptions:
 secretGenerator:
 - name: seiscomp-db-secret
   behavior: create
-  envs:
-  - .env.secret
+  type: Opaque

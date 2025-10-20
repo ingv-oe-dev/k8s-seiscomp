@@ -19,11 +19,8 @@ generatorOptions:
 configMapGenerator:
 - name: seiscomp-config-env
   behavior: create
-  envs:
-  - .env
 
 secretGenerator:
 - name: seiscomp-secret
   behavior: create
-  envs:
-  - .env.secret
+  type: Opaque

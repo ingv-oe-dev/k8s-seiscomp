@@ -3,13 +3,12 @@ kind: Kustomization
 
 resources:
   - ../../base
+  - sealed-secret.yaml
 
-#namePrefix: production-
-
-namespace: seiscomp
+namespace: dataprovider
 
 commonLabels:
-  app: seiscomp
+  app: seiscomp-mariadb
 
 patches:
   - path: statefulset-patch.yaml
@@ -17,19 +16,20 @@ patches:
       kind: StatefulSet
       name: seiscomp-mariadb
 
-# Eg: to change the image tag in production
-# images:
-# - name: ghcr.io/<production_image>
-#   newTag: v1.4.0-stable
-
 generatorOptions:
+  annotations:
+    sealedsecrets.bitnami.com/managed: "true"
   labels:
-    app: seiscomp
+    app: seiscomp-mariadb
   disableNameSuffixHash: true
+
+configurations:
+  - sealed-secret-config.yaml
 
 secretGenerator:
 - name: seiscomp-db-secret
+  type: Opaque
+  options:
+      annotations:
+        config.kubernetes.io/local-config: "true"
   behavior: replace
-  envs:
-  - .env.secret
-  
