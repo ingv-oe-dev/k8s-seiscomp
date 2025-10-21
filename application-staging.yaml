@@ -9,10 +9,10 @@ spec:
   sources:
     - repoURL: https://github.com/ingv-oe-dev/k8s-seiscomp.git
       path: manifests/database/overlays/staging
-      targetRevision: sealed-secrets
+      targetRevision: main
     - repoURL: https://github.com/ingv-oe-dev/k8s-seiscomp.git
       path: manifests/seiscomp/overlays/staging
-      targetRevision: sealed-secrets
+      targetRevision: main
   destination:
     server: https://kubernetes.default.svc
     namespace: dataprovider-staging
